@@ -68,4 +68,70 @@ class GraphQLService {
       return false;
     }
   }
+
+  Future<bool> createBook(
+      {required String title,
+      required String author,
+      required int year}) async {
+    try {
+      QueryResult result = await client.mutate(
+        MutationOptions(
+          fetchPolicy: FetchPolicy.noCache,
+          document: gql("""
+          mutation Mutation(\$bookInput: BookInput){
+            createBook(bookInput: \$bookInput)
+          }
+          """),
+          variables: {
+            "bookInput": {
+              "author": author,
+              "title": title,
+              "year": year,
+            },
+          },
+        ),
+      );
+      if (result.hasException) {
+        throw Exception(result.exception);
+      } else {
+        return true;
+      }
+    } catch (error) {
+      return false;
+    }
+  }
+
+  Future<bool> updateBook(
+      {required String id,
+      required String title,
+      required String author,
+      required int year}) async {
+    try {
+      QueryResult result = await client.mutate(
+        MutationOptions(
+          fetchPolicy: FetchPolicy.noCache,
+          document: gql("""
+          mutation Mutation(\$id: ID!, \$bookInput: BookInput){
+            updateBook(ID: \$id, bookInput: \$bookInput)
+          }
+          """),
+          variables: {
+            "id": id,
+            "bookInput": {
+              "author": author,
+              "title": title,
+              "year": year,
+            },
+          },
+        ),
+      );
+      if (result.hasException) {
+        throw Exception(result.exception);
+      } else {
+        return true;
+      }
+    } catch (error) {
+      return false;
+    }
+  }
 }

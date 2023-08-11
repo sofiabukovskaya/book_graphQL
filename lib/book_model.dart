@@ -11,7 +11,10 @@ class BookModel {
     required this.year,
   });
 
-  static BookModel fromMap({required Map map}) =>
-      BookModel(id: map['_id '],
-        title: map['title'], author: map['author'], year: map['year'],);
+  static BookModel fromMap({required Map map}) => BookModel(
+        id: map['_id '],
+        title: map['title'],
+        author: map['author'],
+        year: map['year'],
+      );
 }
